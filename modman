@@ -1,0 +1,4 @@
+app/code/local/Osme/AjaxCart/          app/code/local/Osme/AjaxCart/
+app/etc/modules/Osme_AjaxCart.xml      app/etc/modules/Osme_AjaxCart.xml
+app/design/frontend/base/default/layout/ajax_cart.xml    app/design/frontend/base/default/layout/ajax_cart.xml
+skin/frontend/base/default/js/ajax_cart.js    skin/frontend/base/default/js/ajax_cart.js
