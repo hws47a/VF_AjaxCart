@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /**
- * Open Source Magento Extensions extension
+ * Vladimir Fishchenko extension
  *
  * NOTICE OF LICENSE
  *
@@ -13,13 +13,13 @@
  * DISCLAIMER
  *
  * Do not edit or add to this file if you wish to upgrade
- * the Osme AjaxCart module to newer versions in the future.
- * If you wish to customize the Osme AjaxCart module for your needs
+ * the VF AjaxCart module to newer versions in the future.
+ * If you wish to customize the VF AjaxCart module for your needs
  * please refer to http://www.magentocommerce.com for more information.
  *
- * @category   Osme
- * @package    Osme_AjaxCart
- * @copyright  Copyright (C) 2012 Open Source Magento Extensions (http://github.com/osme)
+ * @category   VF
+ * @package    VF_AjaxCart
+ * @copyright  Copyright (C) 2012 Vladimir Fishchenko (http://github.com/VF)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 -->
@@ -27,9 +27,9 @@
     <frontend>
         <layout>
             <updates>
-                <osme_ajaxCart>
+                <vf_ajaxCart>
                     <file>ajax_cart.xml</file>
-                </osme_ajaxCart>
+                </vf_ajaxCart>
             </updates>
         </layout>
     </frontend>

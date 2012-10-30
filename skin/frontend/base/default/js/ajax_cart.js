@@ -1,5 +1,5 @@
 /**
- *  extension for Magento
+ * Vladimir Fishchenko extension for Magento
  *
  * NOTICE OF LICENSE
  *
@@ -17,7 +17,7 @@
  *
  * @category   design
  * @package    base_default
- * @copyright  Copyright (C) 2011
+ * @copyright  Copyright (C) 2012 Vladimir Fishchenko (http://fishchenko.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 var AjaxCart = Class.create({
