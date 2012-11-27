@@ -22,17 +22,19 @@
  */
 var AjaxCart = Class.create({
     buttonSelector: '.btn-cart',
+    sidebarCartSelector: '.block-cart',
+    sidebarRemoveLinkSelector: 'a.btn-remove',
     urlMatch: /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/,
     initialize: function () {
-        this.observeButtons();
+        this._observeButtons();
+        this._observeSidebar();
     },
-    observeButtons: function() {
-        var self = this;
+    _observeButtons: function() {
+        var _this = this;
         $$(this.buttonSelector).each(function(th) {
             var href = '';
-            var params = {};
             if (th.onclick) {
-                href = th.onclick.toString().match(self.urlMatch);
+                href = th.onclick.toString().match(_this.urlMatch);
                 if (href) {
                     href = href[0];
                 }
@@ -42,16 +44,37 @@ var AjaxCart = Class.create({
                 var form = th.up('form');
                 if (form) {
                     href = form.action;
-                    params = form.serialize();
                 }
             }
             th.observe('click', function(e) {
                 Event.stop(e);
-                self.openCart(href, params);
+                var form = th.up('form');
+                var params = '';
+                if (form) {
+                    params = form.serialize();
+                }
+                _this.openCart(href, params);
             });
         });
     },
+    _observeSidebar : function () {
+        var _this = this;
+        $$(this.sidebarCartSelector + ' ' + this.sidebarRemoveLinkSelector).each(function(th) {
+            th.observe('click', function (e) {
+                Event.stop(e);
+                _this.openCart(th.href, {});
+            });
+        });
+    },
+    _updateSidebarCart : function(data) {
+        var cartOld = $$(this.sidebarCartSelector).first();
+        if (cartOld) {
+            cartOld.replace(data);
+            this._observeSidebar();
+        }
+    },
     openCart: function(href, params) {
+        var _this = this;
         var loadContent = 'action_content[0]=cart_sidebar'
         params = (params) ? params + '&' + loadContent : loadContent;
         //set that it is easy ajax
@@ -67,16 +90,13 @@ var AjaxCart = Class.create({
                     if (actionContent) {
                         var cartNewData = actionContent['cart_sidebar'];
                         if (cartNewData) {
-                            var cartOld = $$('.block-cart').first();
-                            if (cartOld) {
-                                cartOld.replace(cartNewData);
-                            }
+                            _this._updateSidebarCart(cartNewData);
                         }
                     }
                     if (messages) {
                         var message = messages[0];
                         if (message) {
-                            alert(message.code);
+                            _this.showMessage(message);
                         }
                     }
                 } else {
@@ -84,6 +104,9 @@ var AjaxCart = Class.create({
                 }
             }
         });
+    },
+    showMessage : function (message) {
+        alert(message.code);
     }
 });
 
