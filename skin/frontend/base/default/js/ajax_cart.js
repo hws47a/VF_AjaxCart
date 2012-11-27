@@ -24,6 +24,7 @@ var AjaxCart = Class.create({
     buttonSelector: '.btn-cart',
     sidebarCartSelector: '.block-cart',
     sidebarRemoveLinkSelector: 'a.btn-remove',
+    topLinksSelector: '.links',
     urlMatch: /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/,
     initialize: function () {
         this._observeButtons();
@@ -73,9 +74,15 @@ var AjaxCart = Class.create({
             this._observeSidebar();
         }
     },
+    _updateTopLinks: function(data) {
+        var topLinks = $$(this.topLinksSelector).first();
+        if (topLinks) {
+            topLinks.replace(data);
+        }
+    },
     openCart: function(href, params) {
         var _this = this;
-        var loadContent = 'action_content[0]=cart_sidebar'
+        var loadContent = 'action_content[0]=cart_sidebar&action_content[1]=top.links'
         params = (params) ? params + '&' + loadContent : loadContent;
         //set that it is easy ajax
         params += '&easy_ajax=1';
@@ -91,6 +98,10 @@ var AjaxCart = Class.create({
                         var cartNewData = actionContent['cart_sidebar'];
                         if (cartNewData) {
                             _this._updateSidebarCart(cartNewData);
+                        }
+                        var topLinks = actionContent['top.links'];
+                        if (topLinks) {
+                            _this._updateTopLinks(topLinks);
                         }
                     }
                     if (messages) {
