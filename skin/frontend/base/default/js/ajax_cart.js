@@ -52,6 +52,10 @@ var AjaxCart = Class.create({
         });
     },
     openCart: function(href, params) {
+        var loadContent = 'action_content[0]=cart_sidebar'
+        params = (params) ? params + '&' + loadContent : loadContent;
+        //set that it is easy ajax
+        params += '&easy_ajax=1';
         new Ajax.Request(href, {
             method: 'post',
             parameters: params,
@@ -59,6 +63,16 @@ var AjaxCart = Class.create({
                 var response = transport.responseJSON;
                 if (response) {
                     var messages = response.messages;
+                    var actionContent = response['action_content_data'];
+                    if (actionContent) {
+                        var cartNewData = actionContent['cart_sidebar'];
+                        if (cartNewData) {
+                            var cartOld = $$('.block-cart').first();
+                            if (cartOld) {
+                                cartOld.replace(cartNewData);
+                            }
+                        }
+                    }
                     if (messages) {
                         var message = messages[0];
                         if (message) {
