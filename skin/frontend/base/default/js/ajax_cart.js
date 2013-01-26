@@ -72,6 +72,40 @@ var AjaxCart = Class.create({
     },
     _observeCartPage : function () {
         var _this = this;
+
+        var updateCartPage = function (transport) {
+            var response = transport.responseJSON;
+            if (response) {
+                if (response['custom_content_data']['checkout.cart']) {
+                    var element = new Element('div');
+                    element.update(response['custom_content_data']['checkout.cart']);
+
+                    //update cart table
+                    var cartTableNew = element.down('#shopping-cart-table');
+                    var cartTable = $('shopping-cart-table');
+                    if (cartTable && cartTableNew) {
+                        cartTable.replace(cartTableNew);
+                        _this._observeCartPage();
+                    }
+
+                    //update totals
+                    var totalsNew = element.down('#shopping-cart-totals-table');
+                    var totals = $('shopping-cart-totals-table');
+                    if (totals && totalsNew) {
+                        totals.replace(totalsNew);
+                    }
+
+                    //if no cartTable and totals - update all (usually for empty cart)
+                    if (!cartTableNew && !totalsNew) {
+                        var cart = $$('.cart').first();
+                        if (cart) {
+                            cart.replace(response['custom_content_data']['checkout.cart']);
+                        }
+                    }
+                }
+            }
+        };
+
         $$(this.cartPageSelector + ' ' + this.cartPageUpdateButtonsSelector).each(function (el) {
             el.observe('click', function (e) {
                 var form = el.up('form');
@@ -87,40 +121,19 @@ var AjaxCart = Class.create({
                     new Ajax.Request(form.action, {
                         method: 'post',
                         parameters: formData + '&easy_ajax=1&custom_content[0]=checkout.cart',
-                        onComplete: function (transport) {
-                            var response = transport.responseJSON;
-                            if (response) {
-                                if (response['custom_content_data']['checkout.cart']) {
-                                    var element = new Element('div');
-                                    element.update(response['custom_content_data']['checkout.cart']);
-
-                                    //update cart table
-                                    var cartTableNew = element.down('#shopping-cart-table');
-                                    var cartTable = $('shopping-cart-table');
-                                    if (cartTable && cartTableNew) {
-                                        cartTable.replace(cartTableNew);
-                                        _this._observeCartPage();
-                                    }
-
-                                    //update totals
-                                    var totalsNew = element.down('#shopping-cart-totals-table');
-                                    var totals = $('shopping-cart-totals-table');
-                                    if (totals && totalsNew) {
-                                        totals.replace(totalsNew);
-                                    }
-
-                                    //if no cartTable and totals - update all (usually for empty cart)
-                                    if (!cartTableNew && !totalsNew) {
-                                        var cart = $$('.cart').first();
-                                        if (cart) {
-                                            cart.replace(response['custom_content_data']['checkout.cart']);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        onComplete: updateCartPage
                     });
                 }
+            });
+        });
+        $$(this.cartPageSelector + ' ' + this.removeLinkSelector).each(function (el) {
+            el.observe('click', function (e) {
+                Event.stop(e);
+                new Ajax.Request(el.href, {
+                    method: 'get',
+                    parameters: 'easy_ajax=1&custom_content[0]=checkout.cart',
+                    onComplete: updateCartPage
+                });
             });
         });
     },
