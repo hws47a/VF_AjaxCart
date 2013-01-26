@@ -29,4 +29,7 @@
             <action method="addItem"><type>skin_js</type><name>js/ajax_cart.js</name></action>
         </reference>
     </default>
+    <easy_ajax_checkout_cart_updatepost>
+        <update handle="checkout_cart_index" />
+    </easy_ajax_checkout_cart_updatepost>
 </layout>

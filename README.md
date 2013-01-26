@@ -9,6 +9,7 @@ Current features:
 * update product on configure page via ajax
 * update cart sidebar for community edition
 * update top links
+* update qty and clear items button via ajax on cart page
 
 Coming:
 * show lightbox with last added product

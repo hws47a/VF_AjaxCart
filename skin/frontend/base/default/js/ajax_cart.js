@@ -23,12 +23,15 @@
 var AjaxCart = Class.create({
     buttonSelector: '.btn-cart',
     sidebarCartSelector: '.block-cart',
-    sidebarRemoveLinkSelector: 'a.btn-remove',
+    removeLinkSelector: 'a.btn-remove',
+    cartPageSelector: '.checkout-cart-index',
+    cartPageUpdateButtonsSelector: 'button[name=update_cart_action]',
     topLinksSelector: '.links',
     urlMatch: /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/,
     initialize: function () {
         this._observeButtons();
         this._observeSidebar();
+        this._observeCartPage();
     },
     _observeButtons: function() {
         var _this = this;
@@ -60,10 +63,64 @@ var AjaxCart = Class.create({
     },
     _observeSidebar : function () {
         var _this = this;
-        $$(this.sidebarCartSelector + ' ' + this.sidebarRemoveLinkSelector).each(function(th) {
+        $$(this.sidebarCartSelector + ' ' + this.removeLinkSelector).each(function(th) {
             th.observe('click', function (e) {
                 Event.stop(e);
                 _this.openCart(th.href, {});
+            });
+        });
+    },
+    _observeCartPage : function () {
+        var _this = this;
+        $$(this.cartPageSelector + ' ' + this.cartPageUpdateButtonsSelector).each(function (el) {
+            el.observe('click', function (e) {
+                var form = el.up('form');
+                if (form) {
+                    Event.stop(e);
+                    var formData = '';
+                    if (el.value == 'empty_cart') {
+                        formData = 'update_cart_action=empty_cart';
+                    } else {
+                        formData = form.serialize();
+                    }
+
+                    new Ajax.Request(form.action, {
+                        method: 'post',
+                        parameters: formData + '&easy_ajax=1&custom_content[0]=checkout.cart',
+                        onComplete: function (transport) {
+                            var response = transport.responseJSON;
+                            if (response) {
+                                if (response['custom_content_data']['checkout.cart']) {
+                                    var element = new Element('div');
+                                    element.update(response['custom_content_data']['checkout.cart']);
+
+                                    //update cart table
+                                    var cartTableNew = element.down('#shopping-cart-table');
+                                    var cartTable = $('shopping-cart-table');
+                                    if (cartTable && cartTableNew) {
+                                        cartTable.replace(cartTableNew);
+                                        _this._observeCartPage();
+                                    }
+
+                                    //update totals
+                                    var totalsNew = element.down('#shopping-cart-totals-table');
+                                    var totals = $('shopping-cart-totals-table');
+                                    if (totals && totalsNew) {
+                                        totals.replace(totalsNew);
+                                    }
+
+                                    //if no cartTable and totals - update all (usually for empty cart)
+                                    if (!cartTableNew && !totalsNew) {
+                                        var cart = $$('.cart').first();
+                                        if (cart) {
+                                            cart.replace(response['custom_content_data']['checkout.cart']);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
             });
         });
     },
