@@ -118,9 +118,10 @@ var AjaxCart = Class.create({
                         formData = form.serialize();
                     }
 
-                    new Ajax.Request(form.action, {
+                    new EasyAjax.Request(form.action, {
                         method: 'post',
-                        parameters: formData + '&easy_ajax=1&custom_content[0]=checkout.cart',
+                        custom_content: ['checkout.cart'],
+                        parameters: formData,
                         onComplete: updateCartPage
                     });
                 }
@@ -129,9 +130,9 @@ var AjaxCart = Class.create({
         $$(this.cartPageSelector + ' ' + this.removeLinkSelector).each(function (el) {
             el.observe('click', function (e) {
                 Event.stop(e);
-                new Ajax.Request(el.href, {
+                new EasyAjax.Request(el.href, {
                     method: 'get',
-                    parameters: 'easy_ajax=1&custom_content[0]=checkout.cart',
+                    custom_content: ['checkout.cart'],
                     onComplete: updateCartPage
                 });
             });
@@ -152,12 +153,9 @@ var AjaxCart = Class.create({
     },
     openCart: function(href, params) {
         var _this = this;
-        var loadContent = 'action_content[0]=cart_sidebar&action_content[1]=top.links'
-        params = (params) ? params + '&' + loadContent : loadContent;
-        //set that it is easy ajax
-        params += '&easy_ajax=1';
-        new Ajax.Request(href, {
+        new EasyAjax.Request(href, {
             method: 'post',
+            action_content: ['cart_sidebar', 'top.links'],
             parameters: params,
             onComplete: function (transport) {
                 var response = transport.responseJSON;
