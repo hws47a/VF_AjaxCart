@@ -2,5 +2,6 @@ app/code/local/VF/AjaxCart/                             app/code/local/VF/AjaxCa
 app/etc/modules/VF_AjaxCart.xml                         app/etc/modules/VF_AjaxCart.xml
 app/design/frontend/base/default/layout/ajax_cart.xml   app/design/frontend/base/default/layout/ajax_cart.xml
 app/design/frontend/base/default/template/ajax_cart/    app/design/frontend/base/default/template/ajax_cart/
-skin/frontend/default/default/js/ajax_cart.js              skin/frontend/default/default/js/ajax_cart.js
-skin/frontend/default/default/css/ajax_cart.css            skin/frontend/default/default/css/ajax_cart.css
+skin/frontend/base/default/css/ajax_cart.css            skin/frontend/base/default/css/ajax_cart.css
+skin/frontend/base/default/images/ajax_cart            skin/frontend/base/default/images/ajax_cart
+skin/frontend/base/default/js/ajax_cart.js              skin/frontend/base/default/js/ajax_cart.js

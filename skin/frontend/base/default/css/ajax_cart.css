@@ -1,0 +1,52 @@
+.ajax-cart-modal .overlay {
+    background:black;
+    display:block;
+    left:0;
+    opacity:0.65;
+    filter: alpha(opacity = 65);
+    position:fixed;
+    top:0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+.ajax-cart-modal .block {
+    position: fixed;
+    width: 300px;
+    left: 50%;
+    margin-left: -150px;
+    top: 50%;
+    margin-top: -100px;
+    z-index: 1001;
+}
+.ajax-cart-modal .block .close-btn {
+    margin-top: 3px;
+    float: right;
+    width: 11px;
+    height: 11px;
+    background: url('../images/ajax_cart/btn_remove.gif');
+}
+
+.ajax-cart-loading-mask .overlay {
+    background:white;
+    display:block;
+    left:0;
+    opacity:0.50;
+    filter: alpha(opacity = 50);
+    position:fixed;
+    top:0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+.ajax-cart-loading-mask .loader {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    left: 50%;
+    margin-left: -16px;
+    top: 50%;
+    margin-top: -16px;
+    background: url('../images/ajax_cart/ajax-loader.gif');
+    z-index: 1001;
+}

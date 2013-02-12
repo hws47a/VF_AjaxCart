@@ -29,6 +29,8 @@ var AjaxCart = Class.create({
     topLinksSelector: '.links',
     urlMatch: /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?/,
     initialize: function () {
+        this.isLoading = false;
+
         this._observeButtons();
         this._observeSidebar();
         this._observeCartPage();
@@ -103,6 +105,7 @@ var AjaxCart = Class.create({
                         }
                     }
                 }
+                _this.hideLoader();
             }
         };
 
@@ -118,6 +121,10 @@ var AjaxCart = Class.create({
                         formData = form.serialize();
                     }
 
+                    if (_this.isLoading) {
+                        return false;
+                    }
+                    _this.showLoader();
                     new EasyAjax.Request(form.action, {
                         method: 'post',
                         custom_content: ['checkout.cart'],
@@ -130,6 +137,10 @@ var AjaxCart = Class.create({
         $$(this.cartPageSelector + ' ' + this.removeLinkSelector).each(function (el) {
             el.observe('click', function (e) {
                 Event.stop(e);
+                if (_this.isLoading) {
+                    return false;
+                }
+                _this.showLoader();
                 new EasyAjax.Request(el.href, {
                     method: 'get',
                     custom_content: ['checkout.cart'],
@@ -153,6 +164,10 @@ var AjaxCart = Class.create({
     },
     openCart: function(href, params) {
         var _this = this;
+        if (this.isLoading) {
+            return false;
+        }
+        this.showLoader();
         new EasyAjax.Request(href, {
             method: 'post',
             action_content: ['cart_sidebar', 'top.links'],
@@ -172,6 +187,7 @@ var AjaxCart = Class.create({
                             _this._updateTopLinks(topLinks);
                         }
                     }
+                    _this.hideLoader();
                     if (messages) {
                         var message = messages[0];
                         if (message) {
@@ -191,6 +207,20 @@ var AjaxCart = Class.create({
             modal.show();
         } else {
             alert(message.code);
+        }
+    },
+    showLoader : function () {
+        this.isLoading = true;
+        var loader = $('ajax-cart-loading-mask');
+        if (loader) {
+            loader.show();
+        }
+    },
+    hideLoader : function () {
+        this.isLoading = false;
+        var loader = $('ajax-cart-loading-mask');
+        if (loader) {
+            loader.hide();
         }
     }
 });
