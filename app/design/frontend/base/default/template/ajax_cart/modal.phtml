@@ -1,0 +1,24 @@
+<?php
+/**
+ * @var $this Mage_Core_Block_Template
+ */
+?>
+<div id="ajax-cart-modal" class="ajax-cart-modal" style="display: none;">
+    <div class="overlay"></div>
+    <div class="block">
+        <div class="block-title">
+            <strong>
+                <span id="ajax-cart-modal-title"><?php echo $this->__('Message') ?></span>
+                <a class="close-btn" href="javascript:$('ajax-cart-modal').hide();"></a>
+            </strong>
+        </div>
+        <div class="block-content">
+            <p class="block-subtitle" id="ajax-cart-modal-message">What is your favorite Magento feature?</p>
+            <div class="actions">
+                <button type="button" onclick="$('ajax-cart-modal').hide()" title="Vote" class="button">
+                    <span><span><?php echo $this->__('OK') ?></span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

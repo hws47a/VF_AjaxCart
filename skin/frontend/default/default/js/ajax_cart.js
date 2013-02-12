@@ -185,7 +185,13 @@ var AjaxCart = Class.create({
         });
     },
     showMessage : function (message) {
-        alert(message.code);
+        var modal = $('ajax-cart-modal');
+        if (modal) {
+            $('ajax-cart-modal-message').update(message.code);
+            modal.show();
+        } else {
+            alert(message.code);
+        }
     }
 });
 

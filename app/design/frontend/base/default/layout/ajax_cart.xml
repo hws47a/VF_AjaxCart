@@ -27,6 +27,10 @@
     <default>
         <reference name="head">
             <action method="addItem"><type>skin_js</type><name>js/ajax_cart.js</name></action>
+            <action method="addItem"><type>skin_css</type><name>css/ajax_cart.css</name></action>
+        </reference>
+        <reference name="before_body_end">
+            <block name="ajax_cart_modal" type="core/template" template="ajax_cart/modal.phtml" />
         </reference>
     </default>
     <easy_ajax_checkout_cart_updatepost>
