@@ -28,6 +28,9 @@
         <VF_AjaxCart>
             <active>true</active>
             <codePool>local</codePool>
+            <depends>
+                <VF_EasyAjax />
+            </depends>
         </VF_AjaxCart>
     </modules>
 </config>
